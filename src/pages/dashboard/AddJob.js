@@ -7,6 +7,7 @@ import {
   handleChange,
   clearValues,
   createJob,
+  editJob,
 } from "../../features/job/jobSlice";
 const AddJob = () => {
   const {
@@ -21,7 +22,7 @@ const AddJob = () => {
     isEditing,
     editJobId,
   } = useSelector(store => store.job);
-  const {user} = useSelector((store)=> store.user)
+  const { user } = useSelector(store => store.user);
 
   const dispatch = useDispatch();
 
@@ -32,20 +33,33 @@ const AddJob = () => {
       toast.error("Please Fill Out Al Fields");
       return;
     }
+    if (isEditing) {
+      dispatch(
+        editJob({
+          jobId: editJobId,
+          job: { position, company, jobLocation, jobType, status },
+        })
+      );
+      return;
+    }
     dispatch(createJob({ position, company, jobLocation, jobType, status }));
   };
 
   const handleJobInput = e => {
     const name = e.target.name;
     const value = e.target.value;
-    console.log(name, value);
     dispatch(handleChange({ name, value }));
   };
   useEffect(() => {
-    dispatch(handleChange({
-      name:'jobLocation',value:user.location,
-    }))
-  },[])
+    if (!isEditing) {
+      dispatch(
+        handleChange({
+          name: "jobLocation",
+          value: user.location,
+        })
+      );
+    }
+  }, []);
   return (
     <Wrapper>
       <form className="form">
