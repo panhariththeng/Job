@@ -36,11 +36,11 @@ export const updateUserThunk = async (url, user, thunkAPI) => {
 
 export const clearStoreThunk = async (message, thunkAPI) => {
   try {
-    thunkAPI.dispatch(loginUserThunk(message))
-    thunkAPI.dispatch(clearAllJobsState())
+    thunkAPI.dispatch(logoutUser(message));
+    thunkAPI.dispatch(clearAllJobsState());
     thunkAPI.dispatch(clearValues());
-    return Promise.resolve()
+    return Promise.resolve();
   } catch (error) {
-    return Promise.reject()
+    return Promise.reject();
   }
-}
+};
